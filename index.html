@@ -459,6 +459,22 @@ html,body{background:var(--sheet);color:var(--ink)}
   .list .y{color:var(--accent);font-feature-settings:'tnum' 1}
   .list .c{grid-column:2;color:var(--ink-2)}
 }
+
+/* ── phone layout: header → ring → experience → profile (desktop untouched) ── */
+@media (max-width:700px){
+  .sheet{display:flex;flex-direction:column;padding-block:16px 32px}
+  .sheet>.row,.sheet .tl{display:contents}
+  .topnav{order:0;margin-bottom:28px}
+  .head{order:1}
+  .head .title{font-size:26px}
+  .head #tag{margin-top:12px!important;max-width:none}
+  .viz{order:2;width:calc(100% + 16px)!important;max-width:none;margin:28px -8px 8px;transform:none!important}
+  #det{order:3;margin-top:16px}
+  .sheet .tr{order:4;width:auto;margin-top:0}
+  .tr .det{margin-top:12px}
+  .det{padding:16px 16px;border-radius:20px}
+  .list,.list *{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -979,7 +995,7 @@ function boot(){ requestAnimationFrame(()=>requestAnimationFrame(()=>document.bo
   /* clicking empty space on the poster closes the details */
   svg.addEventListener('click',e=>{if(sel&&!e.target.closest('.spoke')&&!e.target.classList.contains('lhit'))select(null);});
   Object.entries(G).forEach(([id,o])=>{
-    o.hit.addEventListener('click',()=>select(id));
+    o.hit.addEventListener('click',()=>{select(id);if(sel&&matchMedia('(max-width:700px)').matches)setTimeout(()=>det.scrollIntoView({behavior:REDUCE?'auto':'smooth',block:'start'}),420);});
     o.hit.setAttribute('tabindex',0);o.hit.setAttribute('role','button');o.hit.setAttribute('aria-label',`${o.c.r.title}, ${o.c.r.company}, ${fmtRange(o.c.r)}`);
     o.hit.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(id);}});
     const hv=on=>{o.g.classList.toggle('hv',on);o.spoke&&o.spoke.classList.toggle('hv',on);o.stem&&o.stem.classList.toggle('hv',on);svg.classList.toggle('lane-hover',on);};
